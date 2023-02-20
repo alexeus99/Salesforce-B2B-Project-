@@ -1,0 +1,85 @@
+<template>
+    <div class="Title" style="display:flex; justify-content: space-between">
+        <h1 style="font-size:30px"> Proposals </h1>
+        <div class="AddButton" style="margin: 15px 0">
+            <lightning-button label="Add" title="Add" onclick={openModal} class="slds-m-left_x-small">
+            </lightning-button>
+        </div>
+    </div>
+    <div class="MainTable">
+        <lightning-datatable key-field="id" data={data} columns={columns} onrowaction={handleRowAction}
+            show-row-number-column hide-checkbox-column>
+        </lightning-datatable>
+    </div>
+    <template if:true={isOpenModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeSendModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small" onclick={closeModal}></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New Proposal</h2>
+                </header>
+                <div style="background:white">
+                    <div style="display:flex; justify-content:space-between">
+                        <lightning-combobox style="margin-left: 10px; margin-bottom: 10px" name="EquipmentCategory"
+                            label="Category" value={categoryValue} placeholder="Select Equipment Category"
+                            options={options} onchange={handeleChangeCategory}>
+                        </lightning-combobox>
+                        <lightning-input style="margin:auto 10px 0; margin-bottom: 20px" type="text"
+                            label="Product Name" onchange={handleChangeInput}></lightning-input>
+                        <lightning-button style="margin-right:auto; margin-top: 23.5px" label="Search" title="Search"
+                            onclick={handleSearch} class="slds-m-left_x-small"></lightning-button>
+                    </div>
+                    <div class="AddTable">
+                        <lightning-datatable key-field="id" data={equipment} columns={columnsAddTable}
+                            onrowaction={handleRowAction} onrowselection={handleRowSelection}>
+                        </lightning-datatable>
+                    </div>
+                    <div class="slds-modal__footer">
+                        <button type="button" class="slds-button slds-button_neutral" onclick={handleSave}
+                            disabled={disabledSave}>Save</button>
+                        <button type="button" class="slds-button slds-button_brand" onclick={closeModal}>Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <template if:true={isSendModalOpen}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeSendModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small" onclick={closeSendModal}></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <iframe src={proposalURL} style='height: 75vh; width: 100%; border: none;'></iframe>
+                    <div style="font-size: 0.8125rem;">
+                        <p></p>
+                    </div>
+                </div>
+                <footer>
+                    <div class="footer-container" style="text-align: center; background: white;
+                    padding-top: 20px;
+                    padding-bottom: 20px;">
+                        <lightning-button style='margin-right: 20px; margin-bottom: 20px; ' label="Send" title="Send"
+                            onclick={sendConfirmed} class="slds-m-left_x-small"></lightning-button>
+                        <lightning-button style='margin-right: 20px; margin-bottom: 20px; ' label="Cancel"
+                            title="Cancel" onclick={closeSendModal} class="slds-m-left_x-small"></lightning-button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>
